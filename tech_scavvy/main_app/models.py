@@ -10,3 +10,11 @@ class Player(models.Model):
   def __str__(self):
     return f"{self.name} on team {self.team}"
   
+class Team(model.Model):
+  team_name = models.CharField(max_length=100)
+  winner = models.BooleanField()
+
+  def __str__(self):
+    return f"{self.name}"
+
+  
