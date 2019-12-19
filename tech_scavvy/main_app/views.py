@@ -8,8 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def home(request):
-
   return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1>')
+
+def about(request):
+  return render(request, 'about.html')
 
 def signup(request):
     error_message = ''
