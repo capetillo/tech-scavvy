@@ -119,3 +119,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#currently redirects to home when a user logs in but will be 
+#change when a view/path is made for adding a team or for the team the user is on
+LOGIN_REDIRECT_URL = '/'
+
+#this redirects to home when a user logs out
+LOGOUT_REDIRECT_URL = '/'
