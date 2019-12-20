@@ -36,8 +36,11 @@ class Task(model.Models):
     team1 = models.ForeignKey(Team, on_delete=models.CASCADE)
     team2 = models.ForeignKey(Team, on_delete=models.CASCADE)
 
+    #this allows us to know the order of the tasks and programatically work on them in that order
     task_number = models.IntegerField(default=-1)
 
-
+    #this will alert us to the completeness of the tasks or lack there of
     team1_complete = models.BooleanField(default='False')
     team2_complete = models.BooleanField(default='False')
+
+    #TODO: add a function that resets the team1 and 2 keys and bools and task number to be reused next game
