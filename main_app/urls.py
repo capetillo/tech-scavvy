@@ -7,4 +7,6 @@ urlpatterns = [
     path('player/create/', views.PlayerCreate.as_view(), name='players_create'),
     # signup path
     path('accounts/signup/', views.signup, name='signup'),
+    path('match/create/', views.MatchCreate.as_view(), name='match_create')
+    
 ]
