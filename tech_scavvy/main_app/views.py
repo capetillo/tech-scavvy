@@ -41,3 +41,14 @@ class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
     fields = ['name', 'leader', 'team']
 
+@login_required
+def team_detail(request,team_id):
+  #this is your team
+  team = Team.objects.get(id=team_id)
+  #these are all your team members
+  teamMembers = Player.object.filter(team=team_id)
+  #this is your match
+  match = Match.object.filter(id=team.match)
+  #these are the tasks in your match
+  tasks = Task.object.filter(match=team.match)
+  
