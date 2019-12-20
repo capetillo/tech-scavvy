@@ -6,7 +6,6 @@ from django.urls import reverse
 
 class Match(models.Model):
     name = models.CharField(max_length=100)
-    winner = models.ForeignKey(Team, on_delete=models.CASCADE)
     judge = models.ForeignKey(User,on_delete=models.CASCADE)
 
 class Team(models.Model):
@@ -43,5 +42,3 @@ class Task(models.Model):
         self.team1_complete = 'False'
         self.team2_complete = 'False'
         self.task_number = -1
-
-
