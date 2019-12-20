@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
@@ -10,10 +10,12 @@ from .models import Player, Team, Judge, Task
 
 # Create your views here.
 def home(request):
-  return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1>')
+    return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1>')
+
 
 def about(request):
-  return render(request, 'about.html')
+    return render(request, 'about.html')
+
 
 def signup(request):
     error_message = ''
@@ -34,7 +36,12 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
-# creates a player 
+# creates a player
 class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
     fields = ['name', 'leader', 'team']
+
+# creates a judge
+class JudgeCreate(LoginRequiredMixin, CreateView):
+    model = Judge
+    fields = ['name']
