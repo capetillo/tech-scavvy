@@ -6,5 +6,6 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('player/create/', views.PlayerCreate.as_view(), name='players_create')
     # signup path
-    path('accounts/signup/', views.signup, name='signup'),
+# path('accounts/signup/', views.signup, name='signup'),
+    
 ]

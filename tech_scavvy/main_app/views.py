@@ -35,11 +35,6 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 # creates a player 
-  class PlayerCreate(LoginRequiredMixin, CreateView):
+class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
     fields = ['name', 'leader', 'team']
-  
-# creates a judge 
-  class JudgeCreate(LoginRequiredMixin, CreateView):
-    model = Judge
-    fields = ['name']
