@@ -50,7 +50,11 @@ def players_index(request):
     
 class TeamCreate(LoginRequiredMixin, CreateView):
     model = Team
-    fields = ['team_name', 'match']
+    fields = ['team_name']
+
+    def form_valid(self, form):
+      form.instance.user = self.request.user
+      return super().form_valid(form)
     
 @login_required
 def assoc_player(request, team_id, player_id):
@@ -58,3 +62,11 @@ def assoc_player(request, team_id, player_id):
   team.players.add(player_id)
   return redirect(team)
 
+@login_required
+def teams_detail(request, team_id):
+  team = Team.objects.get(id=team_id)
+  players_team_doesnt_have = Player.objects.exclude(id__in = team.players.all().values_list('id'))
+  return render(request, 'teams/detail.html', { 
+      'team': team, 
+      'players': players_team_doesnt_have
+    })

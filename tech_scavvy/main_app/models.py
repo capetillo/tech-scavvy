@@ -10,9 +10,8 @@ class Match(models.Model):
 
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
-  winner = models.BooleanField()
-  team_id = models.IntegerField()
-  #this tells the team what match they are in
+  winner = models.BooleanField(default='False')
+  # this tells the team what match they are in
   match = models.ForeignKey(Match, on_delete=models.CASCADE)
 
   def __str__(self):
@@ -41,4 +40,3 @@ class Task(models.Model):
     self.team1_complete = 'False'
     self.team2_complete = 'False'
     self.task_number = -1
-
