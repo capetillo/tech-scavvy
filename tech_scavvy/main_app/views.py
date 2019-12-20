@@ -10,12 +10,10 @@ from .models import Player, Team, Match, Task
 
 # Create your views here.
 def home(request):
-    return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1>')
-
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
-
 
 def signup(request):
     error_message = ''
@@ -28,7 +26,7 @@ def signup(request):
             user = form.save()
             # This is how we log a user in via code
             login(request, user)
-            return redirect('index')
+            return redirect('/')
         else:
             error_message = 'Invalid sign up - try again'
     # A bad POST or a GET request, so render signup.html with an empty form
@@ -39,8 +37,36 @@ def signup(request):
 # creates a player
 class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
-    fields = ['name', 'leader', 'team']
-<<<<<<< HEAD
-=======
+    fields = ['name', 'team', 'leader']
+#saves associated model if form is valid
+    def form_valid(self, form):
+      form.instance.user = self.request.user
+      return super().form_valid(form)
 
->>>>>>> master
+@login_required
+def players_index(request):
+  players = Player.objects.filter(user=request.user)
+  return render(request, 'players/index.html', { 'players': players })
+    
+class TeamCreate(LoginRequiredMixin, CreateView):
+    model = Team
+    fields = ['team_name']
+
+    def form_valid(self, form):
+      form.instance.user = self.request.user
+      return super().form_valid(form)
+    
+@login_required
+def assoc_player(request, team_id, player_id):
+  team = Team.objects.get(id=team_id)
+  team.players.add(player_id)
+  return redirect(team)
+
+@login_required
+def teams_detail(request, team_id):
+  team = Team.objects.get(id=team_id)
+  players_team_doesnt_have = Player.objects.exclude(id__in = team.players.all().values_list('id'))
+  return render(request, 'teams/detail.html', { 
+      'team': team, 
+      'players': players_team_doesnt_have
+    })
