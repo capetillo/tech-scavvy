@@ -39,5 +39,24 @@ def signup(request):
 # creates a player
 class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
-    fields = ['name', 'leader', 'team']
+    fields = ['name', 'team', 'leader']
+#saves associated model if form is valid
+    def form_valid(self, form):
+      form.instance.user = self.request.user
+      return super().form_valid(form)
+
+@login_required
+def players_index(request):
+  players = Player.objects.filter(user=request.user)
+  return render(request, 'players/index.html', { 'players': players })
+    
+class TeamCreate(LoginRequiredMixin, CreateView):
+    model = Team
+    fields = ['team_name', 'match']
+    
+@login_required
+def assoc_player(request, team_id, player_id):
+  team = Team.objects.get(id=team_id)
+  team.players.add(player_id)
+  return redirect(team)
 
