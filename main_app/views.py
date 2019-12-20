@@ -44,3 +44,4 @@ class MatchCreate(LoginRequiredMixin, CreateView):
     model = Match
     fields = ['name', 'judge']
 
+
