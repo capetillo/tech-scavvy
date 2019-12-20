@@ -40,3 +40,7 @@ def signup(request):
 class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
     fields = ['name', 'leader', 'team']
+<<<<<<< HEAD
+=======
+
+>>>>>>> master

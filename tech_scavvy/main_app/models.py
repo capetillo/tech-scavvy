@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 class Team(models.Model):
@@ -24,10 +25,17 @@ class Team(models.Model):
   team_id = models.IntegerField()
 
     #this tells the team what match they are in
+<<<<<<< HEAD
   match = models.ForeignKey(Match, on_delete=models.CASCADE)
 
   def __str__(self):
     return f"{self.team_name}"
+=======
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+
+    def __str__(self):
+      return f"{self.team_name}"
+>>>>>>> master
 
 class Player(models.Model):
   name = models.CharField(max_length=100)
@@ -40,10 +48,17 @@ class Player(models.Model):
     return f"{self.name} on team {self.team}"
 
 class Task(models.Model):
+<<<<<<< HEAD
   task = models.CharField(max_length=100)
   team1_complete = models.BooleanField(default='False')
   team2_complete = models.BooleanField(default='False')
   match = models.ForeignKey(Match, on_delete=models.CASCADE)
+=======
+    task = models.CharField(max_length=100)
+    team1_complete = models.BooleanField(default='False')
+    team2_complete = models.BooleanField(default='False')
+    match = models.ForeignKey(Match, on_delete = models.CASCADE )
+>>>>>>> master
 
     # this allows us to know the order of the tasks and programatically work on them in that order
   task_number = models.IntegerField(default=-1)
