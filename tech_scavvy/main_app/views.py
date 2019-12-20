@@ -39,7 +39,3 @@ def signup(request):
     model = Player
     fields = ['name', 'leader', 'team']
   
-# creates a judge 
-  class JudgeCreate(LoginRequiredMixin, CreateView):
-    model = Judge
-    fields = ['name']

@@ -17,9 +17,6 @@ from django.contrib import admin
 from django.urls import path, include 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('main_app.urls')),
-
     # paths for users are added to the top level
     path('admin/', admin.site.urls),
     path('', include('main_app.urls')),
