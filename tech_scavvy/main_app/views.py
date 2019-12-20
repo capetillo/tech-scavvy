@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Player, Team, Judge, Task
+from .models import Player, Team, Match, Task
 
 
 # Create your views here.
@@ -41,7 +41,3 @@ class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
     fields = ['name', 'leader', 'team']
 
-# creates a judge
-class JudgeCreate(LoginRequiredMixin, CreateView):
-    model = Judge
-    fields = ['name']
