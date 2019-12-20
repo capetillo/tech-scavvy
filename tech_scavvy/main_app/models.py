@@ -44,3 +44,5 @@ class Task(model.Models):
     team2_complete = models.BooleanField(default='False')
 
     #TODO: add a function that resets the team1 and 2 keys and bools and task number to be reused next game
+    def reset():
+        
