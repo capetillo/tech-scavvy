@@ -25,9 +25,9 @@ class Team(models.Model):
   team_id = models.IntegerField()
 
     #this tells the team what match they are in
-    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+  match = models.ForeignKey(Match, on_delete=models.CASCADE)
 
-    def __str__(self):
+  def __str__(self):
       return f"{self.team_name}"
 
 class Player(models.Model):
@@ -47,9 +47,9 @@ class Task(models.Model):
     match = models.ForeignKey(Match, on_delete = models.CASCADE )
 
     # this allows us to know the order of the tasks and programatically work on them in that order
-  task_number = models.IntegerField(default=-1)
+    task_number = models.IntegerField(default=-1)
 
-  def new_game_reset(self):
-    self.team1_complete = 'False'
-    self.team2_complete = 'False'
-    self.task_number = -1
+    def new_game_reset(self):
+        self.team1_complete = 'False'
+        self.team2_complete = 'False'
+        self.task_number = -1
