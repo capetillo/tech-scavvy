@@ -40,3 +40,7 @@ class PlayerCreate(LoginRequiredMixin, CreateView):
     model = Player
     fields = ['name', 'leader', 'team']
 
+class MatchCreate(LoginRequiredMixin, CreateView):
+    model = Match
+    fields = ['name', 'judge']
+
