@@ -42,7 +42,7 @@ class Task(models.Model):
   team2_complete = models.BooleanField(default='False')
   match = models.ForeignKey(Match, on_delete=models.CASCADE)
     # this allows us to know the order of the tasks and programatically work on them in that order
-    task_number = models.IntegerField(default=-1)
+  task_number = models.IntegerField(default=-1)
 
   def new_game_reset(self):
     self.team1_complete = 'False'
