@@ -8,14 +8,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Player, Team, Match, Task
 
 
-# Create your views here.
 def home(request):
-    return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1>')
-
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
-
 
 def signup(request):
     error_message = ''
@@ -28,7 +25,7 @@ def signup(request):
             user = form.save()
             # This is how we log a user in via code
             login(request, user)
-            return redirect('index')
+            return redirect('/')
         else:
             error_message = 'Invalid sign up - try again'
     # A bad POST or a GET request, so render signup.html with an empty form
@@ -38,19 +35,58 @@ def signup(request):
 
 # creates a player
 
-
-class PlayerCreate(LoginRequiredMixin, CreateView):
+class PlayerCreate(CreateView):
     model = Player
-    fields = ['name', 'leader', 'team']
+    fields = ['name', 'team', 'leader']
+# saves associated model if form is valid
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 @login_required
+def players_index(request):
+    players = Player.objects.filter(user=request.user)
+    return render(request, 'players/index.html', {'players': players})
+
+@login_required
+def players_detail(request, player_id):
+    player = Player.objects.get(id=player_id)
+    opposite_team = Team.objects.exclude(id=player.team.id)
+
+    return render(request, 'players/detail.html', {
+        'player': player,
+        'opposite_team': opposite_team
+
+    })
+
+class TeamCreate(LoginRequiredMixin, CreateView):
+    model = Team
+    fields = ['team_name']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+def teams_index(request):
+    teams = Team.objects.all()
+    players = Player.objects.all()
+    return render(request, 'teams/index.html', {'teams': teams, 'players': players})
+
+@login_required
+def assoc_team(request, player_id, team_id):
+    player = Player.objects.get(id=player_id)
+    player.teams.add(team_id)
+    return redirect()
+
+@login_required
 def team_detail(request, team_id):
-    # this is your team
     team = Team.objects.get(id=team_id)
-    # these are all your team members
-    teamMembers = Player.object.filter(team=team_id)
-    # this is your match
-    match = Match.object.filter(id=team.match)
-    # these are the tasks in your match
-    tasks = Task.object.filter(match=team.match)
+    match = Match.objects.get(id=team.match)
+    tasks = Task.objects.get(match=team.match)
+    #this sorts the tasks by the order of tasks from the biggest (being the last)
+    #to the smallest being the first
+    tasks = tasks.sort(key=lambda x: x.task_number,reverse=True)
+    return redirect(request,'teams/detail.html',{'team':team,'match':match,'tasks':tasks})
