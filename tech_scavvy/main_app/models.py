@@ -12,10 +12,13 @@ class Team(models.Model):
   team_name = models.CharField(max_length=100)
   winner = models.BooleanField(default='False')
   # this tells the team what match they are in
-  match = models.ForeignKey(Match, on_delete=models.CASCADE)
+  # match = models.ForeignKey(Match, on_delete=models.CASCADE)
 
   def __str__(self):
     return f"{self.team_name}"
+
+  def get_absolute_url(self):
+    return reverse('detail', kwargs={'team_id': self.id})
 
 
 class Player(models.Model):
