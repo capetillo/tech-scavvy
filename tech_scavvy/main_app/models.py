@@ -8,6 +8,7 @@ class Match(models.Model):
   name = models.CharField(max_length=100)
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
 
+
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
   winner = models.BooleanField(default='False')
@@ -20,11 +21,12 @@ class Team(models.Model):
   def get_absolute_url(self):
     return reverse('teams_create')
 
+
 class Player(models.Model):
   name = models.CharField(max_length=100)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   team = models.ForeignKey(Team, on_delete=models.CASCADE)
-  # designates team leader.. can only be one per team
+  # designates team leader can only be one per team
   leader = models.BooleanField(default='False')
 
   def __str__(self):
@@ -32,6 +34,7 @@ class Player(models.Model):
 
   def get_absolute_url(self):
     return reverse('detail', kwargs={'player_id': self.id})
+
 
 class Task(models.Model):
   task = models.CharField(max_length=100)
@@ -45,3 +48,12 @@ class Task(models.Model):
     self.team1_complete = 'False'
     self.team2_complete = 'False'
     self.task_number = -1
+
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for task_id: {self.task_id} @{self.url}"

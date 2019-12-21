@@ -5,9 +5,9 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Player, Team, Match, Task
+from .models import Player, Team, Match, Task, Photo
 
-# Create your views here.
+
 def home(request):
     return render(request, 'home.html')
 
@@ -34,46 +34,60 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 # creates a player
+
 class PlayerCreate(CreateView):
-  model = Player
-  fields = ['name', 'team', 'leader']
-#saves associated model if form is valid
-  def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
+    model = Player
+    fields = ['name', 'team', 'leader']
+# saves associated model if form is valid
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 @login_required
 def players_index(request):
-  players = Player.objects.filter(user=request.user)
-  return render(request, 'players/index.html', { 'players': players })
-
-def teams_index(request):
-  teams = Team.objects.all()
-  players = Player.objects.all()
-  return render(request, 'teams/index.html', { 'teams': teams, 'players': players })
-
-    
-class TeamCreate(LoginRequiredMixin, CreateView):
-  model = Team
-  fields = ['team_name']
-
-  def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
-    
-@login_required
-def assoc_team(request, player_id, team_id):
-  player = Player.objects.get(id=player_id)
-  player.teams.add(team_id)
-  return redirect(team)
+    players = Player.objects.filter(user=request.user)
+    return render(request, 'players/index.html', {'players': players})
 
 @login_required
 def players_detail(request, player_id):
-  player = Player.objects.get(id=player_id)
-  opposite_team = Team.objects.exclude(id=player.team.id)
+    player = Player.objects.get(id=player_id)
+    opposite_team = Team.objects.exclude(id=player.team.id)
 
-  return render(request, 'players/detail.html', { 
-    'player': player,
-    'opposite_team' : opposite_team
+    return render(request, 'players/detail.html', {
+        'player': player,
+        'opposite_team': opposite_team
 
     })
+
+class TeamCreate(LoginRequiredMixin, CreateView):
+    model = Team
+    fields = ['team_name']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+def teams_index(request):
+    teams = Team.objects.all()
+    players = Player.objects.all()
+    return render(request, 'teams/index.html', {'teams': teams, 'players': players})
+
+@login_required
+def assoc_team(request, player_id, team_id):
+    player = Player.objects.get(id=player_id)
+    player.teams.add(team_id)
+    return redirect()
+
+@login_required
+def team_detail(request, team_id):
+    team = Team.objects.get(id=team_id)
+    match = Match.objects.get(id=team.match)
+    tasks = Task.objects.get(match=team.match)
+    photos = Photo.objects.get(team=team_id)
+    #this sorts the tasks by the order of tasks from the biggest (being the last)
+    #to the smallest being the first
+    tasks = tasks.sort(key=lambda x: x.task_number,reverse=True)
+    return redirect(request,'teams/detail.html',{'team':team,'match':match,'tasks':tasks, 'photos':photos})
