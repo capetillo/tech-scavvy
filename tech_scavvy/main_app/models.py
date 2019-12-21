@@ -18,8 +18,7 @@ class Team(models.Model):
     return f"{self.team_name}"
 
   def get_absolute_url(self):
-    return reverse('detail', kwargs={'team_id': self.id})
-
+    return reverse('teams_create')
 
 class Player(models.Model):
   name = models.CharField(max_length=100)
@@ -29,7 +28,10 @@ class Player(models.Model):
   leader = models.BooleanField(default='False')
 
   def __str__(self):
-      return f"{self.name} on team {self.team}"
+    return f"{self.name} on team {self.team}"
+
+  def get_absolute_url(self):
+    return reverse('detail', kwargs={'player_id': self.id})
 
 class Task(models.Model):
   task = models.CharField(max_length=100)

@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-<h3>Add players to your team</h3>
-<form action="{% url 'assoc_player' team.id player.id %}" method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn">Add</button>
-</form>
-
-{% endblock %}
