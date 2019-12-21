@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Player, Team, Match, Task
 
-
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -35,38 +34,46 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 # creates a player
-class PlayerCreate(LoginRequiredMixin, CreateView):
-    model = Player
-    fields = ['name', 'team', 'leader']
+class PlayerCreate(CreateView):
+  model = Player
+  fields = ['name', 'team', 'leader']
 #saves associated model if form is valid
-    def form_valid(self, form):
-      form.instance.user = self.request.user
-      return super().form_valid(form)
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
 
 @login_required
 def players_index(request):
   players = Player.objects.filter(user=request.user)
   return render(request, 'players/index.html', { 'players': players })
+
+def teams_index(request):
+  teams = Team.objects.all()
+  players = Player.objects.all()
+  return render(request, 'teams/index.html', { 'teams': teams, 'players': players })
+
     
 class TeamCreate(LoginRequiredMixin, CreateView):
-    model = Team
-    fields = ['team_name']
+  model = Team
+  fields = ['team_name']
 
-    def form_valid(self, form):
-      form.instance.user = self.request.user
-      return super().form_valid(form)
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
     
 @login_required
-def assoc_player(request, team_id, player_id):
-  team = Team.objects.get(id=team_id)
-  team.players.add(player_id)
+def assoc_team(request, player_id, team_id):
+  player = Player.objects.get(id=player_id)
+  player.teams.add(team_id)
   return redirect(team)
 
 @login_required
-def teams_detail(request, team_id):
-  team = Team.objects.get(id=team_id)
-  players_team_doesnt_have = Player.objects.exclude(id__in = team.players.all().values_list('id'))
-  return render(request, 'teams/detail.html', { 
-      'team': team, 
-      'players': players_team_doesnt_have
+def players_detail(request, player_id):
+  player = Player.objects.get(id=player_id)
+  opposite_team = Team.objects.exclude(id=player.team.id)
+
+  return render(request, 'players/detail.html', { 
+    'player': player,
+    'opposite_team' : opposite_team
+
     })
