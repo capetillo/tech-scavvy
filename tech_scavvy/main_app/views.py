@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Player, Team, Match, Task
+from .models import Player, Team, Match, Task, Photo
 
 
 def home(request):
@@ -86,7 +86,8 @@ def team_detail(request, team_id):
     team = Team.objects.get(id=team_id)
     match = Match.objects.get(id=team.match)
     tasks = Task.objects.get(match=team.match)
+    photos = Photo.objects.get(team=team_id)
     #this sorts the tasks by the order of tasks from the biggest (being the last)
     #to the smallest being the first
     tasks = tasks.sort(key=lambda x: x.task_number,reverse=True)
-    return redirect(request,'teams/detail.html',{'team':team,'match':match,'tasks':tasks})
+    return redirect(request,'teams/detail.html',{'team':team,'match':match,'tasks':tasks, 'photos':photos})

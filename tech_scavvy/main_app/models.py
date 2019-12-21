@@ -53,6 +53,7 @@ class Task(models.Model):
 class Photo(models.Model):
     url = models.CharField(max_length=200)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Photo for task_id: {self.task_id} @{self.url}"

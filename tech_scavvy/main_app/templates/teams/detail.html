@@ -5,8 +5,8 @@
 <li>{%if team1_complete: %}
     <!-- leaving the done not done to the styling but we should have an icon or something -->
         X- 
-    {%elif :%}
-        
+    {%elif task.id:%}
+        under review
     {%else:%}
         O-
     {%endif%}
