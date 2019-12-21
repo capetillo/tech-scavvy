@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for task in tasks %}
+<li>{%if team1_complete: %}
+    <!-- leaving the done not done to the styling but we should have an icon or something -->
+        X- 
+    {%elif task.id:%}
+        under review
+    {%else:%}
+        O-
+    {%endif%}
+    {{ task.task }}</li>
+<li>{{ task.name }}</li>
+{% endfor %}
+
+{% endblock %}
