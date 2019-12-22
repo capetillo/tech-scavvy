@@ -39,16 +39,21 @@ class MatchCreate(CreateView):
     model = Match
     fields = ['name']
 # saves associated model if form is valid
-
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.judge = self.request.user
         return super().form_valid(form)
 
 @login_required
-def match_detail(request, judge_id):
-   name = Match.objects.get(id=match_id)
+def match_index(request):
+    match = Match.objects.filter(user=request.user)
+    return render(request, 'match/index.html', {'match': match})
+
+@login_required
+def match_detail(request, match_id):
+   #match = Match.objects.all()
+   match = Match.objects.get(id=match_id)
    return render(request, 'match/detail.html'
-    , {'name': name}
+    ,{'match': match}
 
     )
 

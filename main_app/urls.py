@@ -15,6 +15,7 @@ urlpatterns = [
     
     path('match/create/', views.MatchCreate.as_view(), name='match_create'),
     path('match/<int:match_id>/', views.match_detail, name='detail'),
+    path('match/', views.match_index, name='index'),
     
     
     path('accounts/signup/', views.signup, name='signup'),

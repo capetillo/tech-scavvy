@@ -9,7 +9,9 @@ class Match(models.Model):
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
   def get_absolute_url(self):
     return reverse('detail', kwargs={'match_id': self.id})
-
+  def __str__(self):
+    return f"name is: {self.name} and judge is: {self.judge}"
+    
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
   winner = models.BooleanField(default='False')
