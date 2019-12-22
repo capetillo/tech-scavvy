@@ -33,6 +33,25 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+
+
+class MatchCreate(CreateView):
+    model = Match
+    fields = ['name']
+# saves associated model if form is valid
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+@login_required
+def match_detail(request, judge_id):
+   name = Match.objects.get(id=match_id)
+   return render(request, 'match/detail.html'
+    , {'name': name}
+
+    )
+
 # creates a player
 
 class PlayerCreate(CreateView):

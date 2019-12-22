@@ -7,7 +7,8 @@ from django.urls import reverse
 class Match(models.Model):
   name = models.CharField(max_length=100)
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
-
+  def get_absolute_url(self):
+    return reverse('detail', kwargs={'match_id': self.id})
 
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
