@@ -30,6 +30,7 @@
                     <li><a href="{% url 'players_create' %}">Create your player</a></li>
                     <!-- if they're a leader, they can create a team. otherwise they have to choose a team -->
                     <li><a href="{% url 'teams_create' %}">Create your team</a></li>
+                    <li><a href="{% url 'match_create' %}">Play as Judge</a></li>
                     <li><a href="{% url 'teams_index' %}">View Teams</a></li>
                     {% else %}
                     <!-- otherwise they get a choice of sign up or log in -->
