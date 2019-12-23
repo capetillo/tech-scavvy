@@ -58,8 +58,8 @@ class MatchCreate(CreateView):
         return super().form_valid(form)
 
 @login_required
-def match_index(request):
-    match = Match.objects.filter(user=request.user)
+def match_index(request, match_id):
+    match = Match.objects.filter(id=match_id)
     return render(request, 'match/index.html', {'match': match})
 
 @login_required
