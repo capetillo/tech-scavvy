@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import TaskForm
 from .models import Player, Team, Match, Task, Photo
 
 
@@ -34,7 +35,20 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 
+@login_required
+def add_task(request, match_id):
+  # create the ModelForm using the data in request.POST
+  form = TaskForm(request.POST)
+  # validate the form
+  if form.is_valid():
+    # don't save the form to the db until it
+    # has the match_id assigned
+    new_task = form.save(commit=False)
+    new_task.match_id = match_id
+    new_task.save()
+  return redirect('detail', match_id=match_id)
 
+  
 class MatchCreate(CreateView):
     model = Match
     fields = ['name']
@@ -44,16 +58,18 @@ class MatchCreate(CreateView):
         return super().form_valid(form)
 
 @login_required
-def match_index(request):
-    match = Match.objects.filter(user=request.user)
+def match_index(request, match_id):
+    match = Match.objects.filter(id=match_id)
     return render(request, 'match/index.html', {'match': match})
 
 @login_required
 def match_detail(request, match_id):
    #match = Match.objects.all()
    match = Match.objects.get(id=match_id)
+   task_form = TaskForm()
    return render(request, 'match/detail.html'
-    ,{'match': match}
+    ,{'match': match, 
+     'task_form': task_form,}
 
     )
 
