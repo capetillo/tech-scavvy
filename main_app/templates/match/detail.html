@@ -13,7 +13,7 @@
   <tr><th>Task</th><th>Team1 Complete</th><th>Team2 Complete</th></tr>
 </thead>
 <tbody>
-  {% for t in match.tasks_set.all %}
+  {% for t in match.task_set.all %}
     <tr>
       <td>{{t.task}}</td>
       <td>{{t.team1_complete}}</td>
