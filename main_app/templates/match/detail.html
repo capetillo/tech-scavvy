@@ -3,4 +3,24 @@
 
 <h3> Judge is {{ match.name}} </h3>
 
+<form action="{% url 'add_task' match.id %}" method="post">
+    {% csrf_token %}
+    {{ task_form.as_p }}
+    <input type="submit" class="btn" value="Add Task">
+  </form>
+<table class="striped">
+<thead>
+  <tr><th>Task</th><th>Team1 Complete</th><th>Team2 Complete</th></tr>
+</thead>
+<tbody>
+  {% for t in match.tasks_set.all %}
+    <tr>
+      <td>{{t.task}}</td>
+      <td>{{t.team1_complete}}</td>
+      <td>{{t.team2_complete}}</td>
+    </tr>
+  {% endfor %}
+
+
+
 {% endblock %}
