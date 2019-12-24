@@ -2,11 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import TaskForm
 from .models import Player, Team, Match, Task, Photo
+
+
 
 
 def home(request):
@@ -48,7 +51,15 @@ def add_task(request, match_id):
     new_task.save()
   return redirect('detail', match_id=match_id)
 
-  
+
+class TaskList(LoginRequiredMixin, ListView):
+  model = Task
+
+
+class TaskDetail(LoginRequiredMixin, DetailView):
+  model = Task
+
+
 class MatchCreate(CreateView):
     model = Match
     fields = ['name']
