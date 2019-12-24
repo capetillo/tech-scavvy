@@ -49,7 +49,7 @@ class Task(models.Model):
   task_number = models.IntegerField(default=1)
 
   def get_absolute_url(self):
-    return reverse('task_detail', kwargs={'task_id': self.id})
+    return reverse('task_detail', kwargs={'pk': self.id})
 
   def new_game_reset(self):
     self.team1_complete = 'False'
