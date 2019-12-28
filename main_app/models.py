@@ -16,6 +16,7 @@ class Match(models.Model):
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
   winner = models.BooleanField(default='False')
+  # teeam_id = models.IntegerField(default=1)
   # this tells the team what match they are in
   # match = models.ForeignKey(Match, on_delete=models.CASCADE)
 
@@ -49,19 +50,17 @@ class Task(models.Model):
   task_number = models.IntegerField(default=1)
 
   def get_absolute_url(self):
-    return reverse('task_detail', kwargs={'pk': self.id})
+    return reverse('task_detail', kwargs={'task_id': self.id})
 
   def new_game_reset(self):
     self.team1_complete = 'False'
     self.team2_complete = 'False'
     self.task_number = 1
 
-
-
 class Photo(models.Model):
     url = models.CharField(max_length=200)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    # team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Photo for task_id: {self.task_id} @{self.url}"
