@@ -161,9 +161,10 @@ def add_photo(request, task_id):
             # build the full url string
            
             url = f"{S3_BASE_URL}{BUCKET}/{key}"
-            
-            photo = Photo(url=url, task=task_id)
-           
+            print(url)
+            print(task_id)
+            photo = Photo(url=url, task_id=task_id)
+            print(photo.url)
             photo.save()
             
         except:
