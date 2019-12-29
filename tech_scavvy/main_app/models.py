@@ -14,7 +14,6 @@ class MatchAndWinner(models.Model):
   match = models.ForeignKey(Match,on_delete=models.CASCADE)
   winner = models.BooleanField(default='False')
 
-
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
   matchAndWinner = models.ForeignKey(MatchAndWinner,on_delete=models.CASCADE)
