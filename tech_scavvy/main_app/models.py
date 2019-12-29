@@ -4,13 +4,20 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 # Create your models here.
+
+
 class Match(models.Model):
   name = models.CharField(max_length=100)
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
 
+class MatchAndWinner(models.Model):
+  match = models.ForeignKey(Match,on_delete=models.CASCADE)
+  winner = models.BooleanField(default='False')
+
+
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
-  winner = models.BooleanField(default='False')
+  matchAndWinner = models.ForeignKey(MatchAndWinner,on_delete=models.CASCADE)
 
   def __str__(self):
     return f"{self.team_name}"
@@ -37,7 +44,7 @@ class Player(models.Model):
 class whoAndWhat(models.Model):
   complete = models.BooleanField(default=False)
   # this is unique so a team can only be on a task once
-  team = models.OneToOneField(Team,on_delete=models.CASCADE)
+  team = models.ForeignKey(Team,on_delete=models.CASCADE)
 
 
 class Task(models.Model):
