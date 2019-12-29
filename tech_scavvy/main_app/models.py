@@ -8,12 +8,9 @@ class Match(models.Model):
   name = models.CharField(max_length=100)
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
   winner = models.BooleanField(default='False')
-  # this tells the team what match they are in
-  # match = models.ForeignKey(Match, on_delete=models.CASCADE)
 
   def __str__(self):
     return f"{self.team_name}"
@@ -36,17 +33,22 @@ class Player(models.Model):
     return reverse('detail', kwargs={'player_id': self.id})
 
 
+# this is to allow the task to have multiple teams attached to it and each of those teams is attached to the task
+class whoAndWhat(models.Model):
+  complete = models.BooleanField(default=False)
+  # this is unique so a team can only be on a task once
+  team = models.OneToOneField(Team,on_delete=models.CASCADE)
+
+
 class Task(models.Model):
-  task = models.CharField(max_length=100)
-  team1_complete = models.BooleanField(default='False')
-  team2_complete = models.BooleanField(default='False')
+  task = models.CharField(max_length=250,unique=True)
+  whoAndWhat = models.ManyToManyField(whoAndWhat)
   match = models.ForeignKey(Match, on_delete=models.CASCADE)
-    # this allows us to know the order of the tasks and programatically work on them in that order
+  # this allows us to know the order of the tasks and programatically work on them in that order
   task_number = models.IntegerField(default=-1)
 
   def new_game_reset(self):
-    self.team1_complete = 'False'
-    self.team2_complete = 'False'
+    # needs to also reset the whoAndWhats 
     self.task_number = -1
 
 

@@ -85,9 +85,14 @@ def assoc_team(request, player_id, team_id):
 def team_detail(request, team_id):
     team = Team.objects.get(id=team_id)
     match = Match.objects.get(id=team.match)
-    tasks = Task.objects.get(match=team.match)
+    tasks = Task.objects.get(match=match.id)
     photos = Photo.objects.get(team=team_id)
+
+    #this removes all the whoAndWhat that aren't related to the team
+    tasks = tasks.whoAndWhat.filter(team=team.id)
+    
     #this sorts the tasks by the order of tasks from the biggest (being the last)
     #to the smallest being the first
     tasks = tasks.sort(key=lambda x: x.task_number,reverse=True)
+    
     return redirect(request,'teams/detail.html',{'team':team,'match':match,'tasks':tasks, 'photos':photos})
