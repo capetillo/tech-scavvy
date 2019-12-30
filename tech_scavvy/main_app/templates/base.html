@@ -1,7 +1,6 @@
-<!-- this is the html that is applied to all other views so that we can have a header/footer without partials-->
 
 {% load static %}
-<!-- boiler plate html -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,21 +17,21 @@
         <nav>
             <div>
                 <ul>
-                    <!-- this is the top of the screen title -->
+                   
                     <li><a href="/">&nbsp;&nbsp;Tech Scavvy</a></li>
                 </ul>
                 <ul>
-                    <!-- nav bar items -->
+                
                     <li><a href="{% url 'about' %}">About</a></li>
                     {% if user.is_authenticated %}
-                    <!--  if the user is logged in they can see the log out -->
+              
                     <li><a href="{% url 'logout' %}">Log Out</a></li>
                     <li><a href="{% url 'players_create' %}">Create your player</a></li>
-                    <!-- if they're a leader, they can create a team. otherwise they have to choose a team -->
+                 
                     <li><a href="{% url 'teams_create' %}">Create your team</a></li>
                     <li><a href="{% url 'teams_index' %}">View Teams</a></li>
                     {% else %}
-                    <!-- otherwise they get a choice of sign up or log in -->
+           
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>
                     <li><a href="{% url 'login' %}">Log In</a></li>
                     {% endif %}

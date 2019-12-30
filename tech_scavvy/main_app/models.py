@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.urls import reverse
 
 # Create your models here.
 class Match(models.Model):
@@ -9,7 +8,7 @@ class Match(models.Model):
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Team(models.Model):
-  team_name = models.CharField(max_length=100)
+  team_name = models.CharField(max_length=20, default=None)
   winner = models.BooleanField(default='False')
   # this tells the team what match they are in
   # match = models.ForeignKey(Match, on_delete=models.CASCADE)
@@ -18,12 +17,12 @@ class Team(models.Model):
     return f"{self.team_name}"
 
   def get_absolute_url(self):
-    return reverse('teams_create')
+    return reverse('assoc_team')
 
 class Player(models.Model):
   name = models.CharField(max_length=100)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
-  team = models.ForeignKey(Team, on_delete=models.CASCADE)
+  team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
   # designates team leader.. can only be one per team
   leader = models.BooleanField(default='False')
 
@@ -31,7 +30,7 @@ class Player(models.Model):
     return f"{self.name} on team {self.team}"
 
   def get_absolute_url(self):
-    return reverse('detail', kwargs={'player_id': self.id})
+    return reverse('teams_index')
 
 class Task(models.Model):
   task = models.CharField(max_length=100)

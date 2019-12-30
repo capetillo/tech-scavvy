@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -36,8 +37,14 @@ def signup(request):
 # creates a player
 class PlayerCreate(CreateView):
   model = Player
-  fields = ['name', 'team', 'leader']
-#saves associated model if form is valid
+  fields = ['name']
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
+
+class TeamCreate(LoginRequiredMixin, CreateView):
+  model = Team
+  fields = ['team_name']
   def form_valid(self, form):
     form.instance.user = self.request.user
     return super().form_valid(form)
@@ -45,35 +52,30 @@ class PlayerCreate(CreateView):
 @login_required
 def players_index(request):
   players = Player.objects.filter(user=request.user)
-  return render(request, 'players/index.html', { 'players': players })
+  return render(request, 'main_app/player_form.html', { 'players': players})
 
+@login_required
 def teams_index(request):
+  players = Player.objects.filter(user=request.user)
   teams = Team.objects.all()
-  players = Player.objects.all()
   return render(request, 'teams/index.html', { 'teams': teams, 'players': players })
 
-    
-class TeamCreate(LoginRequiredMixin, CreateView):
-  model = Team
-  fields = ['team_name']
-
-  def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
-    
 @login_required
-def assoc_team(request, player_id, team_id):
-  player = Player.objects.get(id=player_id)
-  player.teams.add(team_id)
+def leaders_index(request, name, team_name):
+  teams = Team.objects.get(name=teams.name)
+  players = Player.objects.get(team_name=players.team_name)
+  return render(request, 'leaders/index.html', { 'teams': teams, 'players': players })
+
+
+# @login_required
+# def available_teams(request, player_id, team_id):
+#   players = Player.objects.get(id=player_id)
+#   teams = Team.objects.get(id=team_id)
+#   return render(request, 'players/detail.html', { 'players': players, 'teams': teams })
+
+@login_required
+def assoc_team(request):
+  players = Player.objects.filter(user=request.user)
+  players.teams.add(team_id)
   return redirect(team)
 
-@login_required
-def players_detail(request, player_id):
-  player = Player.objects.get(id=player_id)
-  opposite_team = Team.objects.exclude(id=player.team.id)
-
-  return render(request, 'players/detail.html', { 
-    'player': player,
-    'opposite_team' : opposite_team
-
-    })

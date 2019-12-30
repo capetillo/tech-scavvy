@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
+<h1>Available Teams: </h1>
 
-{% for player in players %}
-<li>{{ player.team }}</li>
-<li>{{ player.name }}</li>
+{% for team in teams %}
+<form action="{% url 'assoc_team' player.id team.id %}" method="post">
+    {% csrf_token %}
+<li>{{ team.team_name }}
+<input type="submit" value="Join" class="btn">
+</li>
+</form>
 {% endfor %}
 
 {% endblock %}
+
