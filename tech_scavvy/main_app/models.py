@@ -17,7 +17,7 @@ class Team(models.Model):
     return f"{self.team_name}"
 
   def get_absolute_url(self):
-    return reverse('assoc_team')
+    return reverse('teams_detail', kwargs={'pk': self.id})
 
 class Player(models.Model):
   name = models.CharField(max_length=100)

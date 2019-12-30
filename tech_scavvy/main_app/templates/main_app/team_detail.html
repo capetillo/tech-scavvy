@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Team Details</h1>
+
+{{ team.team_name }}
+
+<a href="{% url 'teams_update' team.id %}">Edit</a>
+<a href="{% url 'teams_delete' team.id %}">Delete</a>
+
+{% endblock %}

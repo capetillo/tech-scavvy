@@ -7,7 +7,7 @@
    
     <h3>Pick a team to join</h3>
    
-    <form action="{% url 'assoc_team' player.id %}" method="post">
+    <form action="{% url 'assoc_team' player.id team.id %}" method="post">
         {% csrf_token %}
         {{ teams }}
                 <button type="submit" class="btn">Add</button>

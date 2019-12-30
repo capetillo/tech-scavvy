@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import TemplateView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -38,27 +39,41 @@ def signup(request):
 class PlayerCreate(CreateView):
   model = Player
   fields = ['name']
+
   def form_valid(self, form):
     form.instance.user = self.request.user
     return super().form_valid(form)
 
+@login_required
+def assoc_team(request):
+  player = Player.objects.get(id=player_id)
+  player.team.add(team_id)
+  return redirect(teams_index)
+
+class TeamList(LoginRequiredMixin, ListView):
+  model = Team
+
+class TeamDetail(LoginRequiredMixin, DetailView):
+  model = Team
+
 class TeamCreate(LoginRequiredMixin, CreateView):
   model = Team
   fields = ['team_name']
-  def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
+
+
+class TeamUpdate(LoginRequiredMixin, UpdateView):
+  model = Team
+  fields = ['team_name']
+
+class TeamDelete(LoginRequiredMixin, DeleteView):
+  model = Team
+  success_url = '/teams/'
 
 @login_required
 def players_index(request):
   players = Player.objects.filter(user=request.user)
   return render(request, 'main_app/player_form.html', { 'players': players})
 
-@login_required
-def teams_index(request):
-  players = Player.objects.filter(user=request.user)
-  teams = Team.objects.all()
-  return render(request, 'teams/index.html', { 'teams': teams, 'players': players })
 
 @login_required
 def leaders_index(request, name, team_name):
@@ -72,10 +87,4 @@ def leaders_index(request, name, team_name):
 #   players = Player.objects.get(id=player_id)
 #   teams = Team.objects.get(id=team_id)
 #   return render(request, 'players/detail.html', { 'players': players, 'teams': teams })
-
-@login_required
-def assoc_team(request):
-  players = Player.objects.filter(user=request.user)
-  players.teams.add(team_id)
-  return redirect(team)
 
