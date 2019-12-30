@@ -87,10 +87,7 @@ def match_detail(request, match_id):
     #match = Match.objects.all()
     match = Match.objects.get(id=match_id)
     task_form = TaskForm()
-    return render(request, 'match/detail.html', {'match': match,
-                                                 'task_form': task_form, }
-
-                  )
+    return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, })
 
 # creates a player
 
@@ -123,14 +120,8 @@ def players_detail(request, player_id):
     })
 
 
-class TeamCreate(LoginRequiredMixin, CreateView):
-    model = Team
-    fields = ['team_name']
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
+def teams_create(request):
+    pass
 
 def teams_index(request):
     teams = Team.objects.all()
@@ -158,6 +149,7 @@ def team_detail(request, team_id):
     # this sorts the tasks by the order of tasks from the biggest (being the last)
     # to the smallest being the first
     tasks = tasks.sort(key=lambda x: x.task_number, reverse=True)
+
     return redirect(request, 'teams/detail.html', {'team': team, 'match': match, 'tasks': tasks, 'photos': photos})
 
 

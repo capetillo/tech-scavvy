@@ -11,7 +11,7 @@ urlpatterns = [
     
     path('teams/', views.teams_index, name='teams_index'),
     path('teams/<int:team_id>',views.team_detail, name='teams_detail'),
-    path('teams/create/', views.TeamCreate.as_view(), name='teams_create'),
+    path('teams/create/', views.teams_create, name='teams_create'),
     
     path('match/create/', views.MatchCreate.as_view(), name='match_create'),
     path('match/<int:match_id>/', views.match_detail, name='detail'),
