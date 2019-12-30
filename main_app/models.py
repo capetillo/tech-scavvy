@@ -9,6 +9,10 @@ from django.urls import reverse
 class Match(models.Model):
   name = models.CharField(max_length=100)
   judge = models.ForeignKey(User, on_delete=models.CASCADE)
+  def get_absolute_url(self):
+    return reverse('detail', kwargs={'match_id': self.id})
+  def __str__(self):
+    return f"name is: {self.name} and judge is: {self.judge}"
 
 class MatchAndWinner(models.Model):
   match = models.ForeignKey(Match,on_delete=models.CASCADE)
@@ -61,7 +65,7 @@ class Task(models.Model):
 class Photo(models.Model):
     url = models.CharField(max_length=200)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    # team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Photo for task_id: {self.task_id} @{self.url}"

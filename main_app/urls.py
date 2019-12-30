@@ -13,5 +13,15 @@ urlpatterns = [
     path('teams/<int:team_id>',views.team_detail, name='teams_detail'),
     path('teams/create/', views.TeamCreate.as_view(), name='teams_create'),
     
+    path('match/create/', views.MatchCreate.as_view(), name='match_create'),
+    path('match/<int:match_id>/', views.match_detail, name='detail'),
+    path('match/', views.match_index, name='index'),
+    path('match/<int:match_id>/add_task/', views.add_task, name='add_task'),
+    
+    path('tasks/', views.TaskList.as_view(), name='task_index'),
+    path('tasks/<int:pk>/', views.TaskDetail.as_view(), name='task_detail'),
     path('accounts/signup/', views.signup, name='signup'),
+
+
+    path('tasks/<int:task_id>/add_photo/', views.add_photo, name='add_photo'),
 ]
