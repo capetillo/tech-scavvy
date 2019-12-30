@@ -120,8 +120,10 @@ def players_detail(request, player_id):
     })
 
 
-def teams_create(request):
-    return render(request, 'teams/create.html')
+def teams_create(request,player_id):
+    player = Player.objects.get(id=player_id)
+    
+    return render(request, 'teams/create.html', {'player': player})
 
 def teams_index(request):
     teams = Team.objects.all()
