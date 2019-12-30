@@ -29,11 +29,8 @@
                     <li><a href="{% url 'logout' %}">Log Out</a></li>
                     <li><a href="{% url 'players_create' %}">Create your player</a></li>
                     <!-- if they're a leader, they can create a team. otherwise they have to choose a team -->
-                    {% if player.leader%}
                     <li><a href="{% url 'teams_create' %}">Create your team</a></li>
-                    {% elif !player.leader %}
                     <li><a href="{% url 'teams_index' %}">View Teams</a></li>
-                    {% endif %}
                     {% else %}
                     <!-- otherwise they get a choice of sign up or log in -->
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>
