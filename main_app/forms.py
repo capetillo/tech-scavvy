@@ -5,4 +5,4 @@ class TaskForm(ModelForm):
   class Meta:
     model = Task
     
-    fields = ['task', 'task_number']
+    fields = ['task']
