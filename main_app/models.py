@@ -14,20 +14,24 @@ class Match(models.Model):
   def __str__(self):
     return f"name is: {self.name} and judge is: {self.judge}"
 
+
+
 class MatchAndWinner(models.Model):
   match = models.ForeignKey(Match,on_delete=models.CASCADE)
   winner = models.BooleanField(default='False')
 
 class Team(models.Model):
   team_name = models.CharField(max_length=100)
-  matchAndWinner = models.ForeignKey(MatchAndWinner,on_delete=models.CASCADE)
+  matchAndWinner = models.ForeignKey(MatchAndWinner,on_delete=models.CASCADE, default = None)
+  ready = models.BooleanField(default=False)
 
   def __str__(self):
     return f"{self.team_name}"
 
   def get_absolute_url(self):
     return reverse('teams_create')
-
+  
+  
 
 class Player(models.Model):
   name = models.CharField(max_length=100)
@@ -48,7 +52,6 @@ class whoAndWhat(models.Model):
   complete = models.BooleanField(default=False)
   # this is unique so a team can only be on a task once
   team = models.ForeignKey(Team,on_delete=models.CASCADE)
-
 
 class Task(models.Model):
   task = models.CharField(max_length=250,unique=True)
