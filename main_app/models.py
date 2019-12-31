@@ -94,6 +94,7 @@ def make_match(team_id):
 
         # create the match
         match = Match(Name=team1.name+team2.name)
+        match.save()
         # create match and winner for each team
         # pull 5 random tasks
         randomIndecies = []
@@ -111,6 +112,7 @@ def make_match(team_id):
             tasks[num].whoAndWhat.create(match = match,team = team1,task_number = taskNum)
             tasks[num].whoAndWhat.create(match = match,team = team2,task_number = taskNum)
             taskNum+=1
+            tasks[num].save()
     else:
         #otherwise put the team in the ready queue
         team1.ready = True
