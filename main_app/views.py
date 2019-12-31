@@ -89,6 +89,10 @@ def match_detail(request, match_id):
     task_form = TaskForm()
     return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, })
 
+def task_complete(request, match_id):
+    match= Match.objects.get(id=match_id)
+    task_complete_form = TaskCompleteForm()
+    return render(request,'match/index.html', {'match': match, 'task_complete_form': task_complete_form, })
 # creates a player
 
 
