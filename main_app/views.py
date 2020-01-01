@@ -123,7 +123,7 @@ def players_detail(request, player_id):
 
     })
 
-
+@login_required
 def teams_create(request,player_id):
     player = Player.objects.get(id=player_id)
     
