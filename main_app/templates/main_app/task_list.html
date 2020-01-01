@@ -2,13 +2,15 @@
 {% block content %}
 
 <h1>Task List</h1>
-
+{{Player.name}}
+{{player}}
 {% for t in task_list %}
   <a href="{% url 'task_detail' t.id %}">
     <div class="card">
         <div class="card-content">
             <span class="card-title"> Task Number {{ t.task_number }} ---
               {{ t.task }}
+              {{ t.team.all}}
               {{t.team_1_complete}}
               {{t.team_2_complete}}
 

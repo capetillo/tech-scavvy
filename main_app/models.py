@@ -24,6 +24,11 @@ class MatchAndWinner(models.Model):
     winner = models.BooleanField(default='False')
 
 
+
+
+
+
+
 CHOICES = [(i,i) for i in range(3)]
 
 class Team(models.Model):
@@ -32,6 +37,7 @@ class Team(models.Model):
     #     MatchAndWinner, on_delete=models.CASCADE, default=None)
     ready = models.BooleanField(default=False)
     team_number = models.IntegerField(choices=CHOICES)
+   
 
     def __str__(self):
         return f"{self.team_name}"
@@ -66,13 +72,16 @@ class whoAndWhat(models.Model):
     complete = models.BooleanField(default=False)
 
 
+complete = [(True, False)]
 class Task(models.Model):
     task = models.CharField(max_length=250, unique=True)
-    whoAndWhat = models.ManyToManyField(whoAndWhat)
-    team_1_complete = models.BooleanField(default=False)
-    team_2_complete = models.BooleanField(default=False)
+    # whoAndWhat = models.ManyToManyField(whoAndWhat)
+    team = models.ManyToManyField(Team)
+    team_1_complete = models.BooleanField(choices=complete)
+    team_2_complete = models.BooleanField(choices=complete)
 
-
+    # def get_absolute_url(self):
+    #     return reverse('task_detail', kwargs={'pk':self.id ,'team_id': self.team_id})
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
