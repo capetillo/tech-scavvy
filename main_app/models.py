@@ -24,11 +24,14 @@ class MatchAndWinner(models.Model):
     winner = models.BooleanField(default='False')
 
 
+CHOICES = [(i,i) for i in range(3)]
+
 class Team(models.Model):
     team_name = models.CharField(max_length=100)
-    matchAndWinner = models.ForeignKey(
-        MatchAndWinner, on_delete=models.CASCADE, default=None)
+    # matchAndWinner = models.ForeignKey(
+    #     MatchAndWinner, on_delete=models.CASCADE, default=None)
     ready = models.BooleanField(default=False)
+    team_number = models.IntegerField(choices=CHOICES)
 
     def __str__(self):
         return f"{self.team_name}"
