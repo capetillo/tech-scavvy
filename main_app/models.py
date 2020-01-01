@@ -69,6 +69,9 @@ class whoAndWhat(models.Model):
 class Task(models.Model):
     task = models.CharField(max_length=250, unique=True)
     whoAndWhat = models.ManyToManyField(whoAndWhat)
+    team_1_complete = models.BooleanField(default=False)
+    team_2_complete = models.BooleanField(default=False)
+
 
 
 class Photo(models.Model):
