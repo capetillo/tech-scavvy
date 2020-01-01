@@ -7,6 +7,7 @@ import random
 # Create your models here.
 
 
+
 class Match(models.Model):
     name = models.CharField(max_length=100)
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -60,21 +61,11 @@ class whoAndWhat(models.Model):
     task_number = models.IntegerField(default=-1)
     #this doesn't need to be set in the create method
     complete = models.BooleanField(default=False)
-    
 
 
 class Task(models.Model):
-  task = models.CharField(max_length=250,unique=True)
-  whoAndWhat = models.ManyToManyField(whoAndWhat)
-  match = models.ForeignKey(Match, on_delete=models.CASCADE)
-  # this allows us to know the order of the tasks and programatically work on them in that order
-  task_number = models.IntegerField(default=-1)
-  team_1_complete = models.BooleanField(default=False)
-  team_2_complete = models.BooleanField(default=False)
-
-  def new_game_reset(self):
-    # needs to also reset the whoAndWhats 
-    self.task_number = -1
+    task = models.CharField(max_length=250, unique=True)
+    whoAndWhat = models.ManyToManyField(whoAndWhat)
 
 
 class Photo(models.Model):

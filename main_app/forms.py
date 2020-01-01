@@ -5,10 +5,10 @@ class TaskForm(ModelForm):
   class Meta:
     model = Task
     
-    fields = ['task', 'task_number']
+    fields = ['task']
 
 
-class TaskCompleteForm(ModelForm):
-  class Meta:
-    model = Task
-    fields = ['team_1_complete', 'team_2_complete']
+# class TaskCompleteForm(ModelForm):
+#   class Meta:
+#     model = Task
+#     fields = ['team_1_complete', 'team_2_complete']
