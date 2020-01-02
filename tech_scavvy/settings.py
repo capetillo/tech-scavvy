@@ -126,3 +126,7 @@ LOGIN_REDIRECT_URL = '/'
 
 #this redirects to home when a user logs out
 LOGOUT_REDIRECT_URL = '/'
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
