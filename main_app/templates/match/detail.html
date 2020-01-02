@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h3> Judge is {{ match.name}} </h3>
+<h3> Judge is {{ match.name }} </h3>
 
 <form action="{% url 'add_task' match.id %}" method="post">
     {% csrf_token %}
@@ -10,17 +10,13 @@
   </form>
 <table class="striped">
 <thead>
-  <tr><th>Task Number</th><th>Task</th></tr>
+  <tr><th>Task</th></tr>
 </thead>
 <tbody>
   {% for t in match.task_set.all %}
     <tr>
-      <td>{{t.task_number}}</td>
       <td>{{t.task}}</td>
-
     </tr>
   {% endfor %}
-
-
 
 {% endblock %}

@@ -6,9 +6,8 @@ import random
 
 # Create your models here.
 
-
 class Match(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,default=None)
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
@@ -60,7 +59,6 @@ class whoAndWhat(models.Model):
     task_number = models.IntegerField(default=-1)
     #this doesn't need to be set in the create method
     complete = models.BooleanField(default=False)
-    
 
 
 class Task(models.Model):

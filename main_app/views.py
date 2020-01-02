@@ -84,7 +84,6 @@ def match_index(request, match_id):
 
 @login_required
 def match_detail(request, match_id):
-    #match = Match.objects.all()
     match = Match.objects.get(id=match_id)
     task_form = TaskForm()
     return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, })
