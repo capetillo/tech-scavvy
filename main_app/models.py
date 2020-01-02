@@ -32,7 +32,7 @@ class MatchAndWinner(models.Model):
 CHOICES = [(i,i) for i in range(3)]
 
 class Team(models.Model):
-    team_name = models.CharField(max_length=100)
+    # team_name = models.CharField(max_length=100)
     # matchAndWinner = models.ForeignKey(
     #     MatchAndWinner, on_delete=models.CASCADE, default=None)
     ready = models.BooleanField(default=False)
@@ -40,7 +40,7 @@ class Team(models.Model):
    
 
     def __str__(self):
-        return f"{self.team_name}"
+        return f"{self.team_number}"
 
     def get_absolute_url(self):
         return reverse('teams_create')
@@ -57,7 +57,7 @@ class Player(models.Model):
         return f"{self.name} on team {self.team}"
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'player_id': self.id})
+        return reverse('detail', kwargs={'player_id': self.id, 'team_id': self.team.team_number})
 
 
 # this is to allow the task to have multiple teams attached to it and each of those teams is attached to the task

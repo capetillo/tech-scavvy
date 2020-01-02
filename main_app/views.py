@@ -113,11 +113,12 @@ def players_index(request):
 
 
 @login_required
-def players_detail(request, player_id):
+def players_detail(request, player_id, team_id):
     player = Player.objects.get(id=player_id)
+    team = Team.objects.get(id=player.team.id)
     opposite_team = Team.objects.exclude(id=player.team.id)
 
-    return render(request, 'players/detail.html', {
+    return render(request, 'players/index.html', {
         'player': player,
         'opposite_team': opposite_team
 
