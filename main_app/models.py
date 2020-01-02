@@ -77,8 +77,8 @@ class Task(models.Model):
     task = models.CharField(max_length=250, unique=True)
     # whoAndWhat = models.ManyToManyField(whoAndWhat)
     team = models.ManyToManyField(Team)
-    team_1_complete = models.BooleanField(choices=complete)
-    team_2_complete = models.BooleanField(choices=complete)
+    team_1_complete = models.BooleanField(default = False, choices=complete)
+    team_2_complete = models.BooleanField(default = False, choices=complete)
 
     # def get_absolute_url(self):
     #     return reverse('task_detail', kwargs={'pk':self.id ,'team_id': self.team_id})
