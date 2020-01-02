@@ -7,6 +7,7 @@ import random
 # Create your models here.
 
 
+
 class Match(models.Model):
     name = models.CharField(max_length=100)
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,14 +24,23 @@ class MatchAndWinner(models.Model):
     winner = models.BooleanField(default='False')
 
 
+
+
+
+
+
+CHOICES = [(i,i) for i in range(3)]
+
 class Team(models.Model):
-    team_name = models.CharField(max_length=100)
-    matchAndWinner = models.ForeignKey(
-        MatchAndWinner, on_delete=models.CASCADE, default=None)
+    # team_name = models.CharField(max_length=100)
+    # matchAndWinner = models.ForeignKey(
+    #     MatchAndWinner, on_delete=models.CASCADE, default=None)
     ready = models.BooleanField(default=False)
+    team_number = models.IntegerField(choices=CHOICES)
+   
 
     def __str__(self):
-        return f"{self.team_name}"
+        return f"{self.team_number}"
 
     def get_absolute_url(self):
         return reverse('teams_create')
@@ -47,7 +57,7 @@ class Player(models.Model):
         return f"{self.name} on team {self.team}"
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'player_id': self.id})
+        return reverse('detail', kwargs={'player_id': self.id, 'team_id': self.team.team_number})
 
 
 # this is to allow the task to have multiple teams attached to it and each of those teams is attached to the task
@@ -60,13 +70,18 @@ class whoAndWhat(models.Model):
     task_number = models.IntegerField(default=-1)
     #this doesn't need to be set in the create method
     complete = models.BooleanField(default=False)
-    
 
 
+complete = [(True, False)]
 class Task(models.Model):
     task = models.CharField(max_length=250, unique=True)
-    whoAndWhat = models.ManyToManyField(whoAndWhat)
+    # whoAndWhat = models.ManyToManyField(whoAndWhat)
+    team = models.ManyToManyField(Team)
+    team_1_complete = models.BooleanField(default = False, choices=complete)
+    team_2_complete = models.BooleanField(default = False, choices=complete)
 
+    # def get_absolute_url(self):
+    #     return reverse('task_detail', kwargs={'pk':self.id ,'team_id': self.team_id})
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
