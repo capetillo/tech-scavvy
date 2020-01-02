@@ -1,1 +1,1 @@
-web: gunicorn tech_scavvy.wqgi
+web: gunicorn tech_scavvy:wsgi
