@@ -4,7 +4,8 @@
 <h1>Player Info:</h1>
 {% if object %}
 <h3>{{ players.name }}</h3>
-<h3>{{ players.team }}</h3>
+
+
 
 
 {% else %}
@@ -17,5 +18,14 @@
 </form>
 {%endif%}
 
+<h3>Available Teams</h3>
+{% for team in teams %}
+<h3>Pick a team to join</h3>
+<form action="{% url 'assoc_team' player.id team.id %}" method="post">
+    {% csrf_token %}
+    {{team}}
+        <button type="submit" class="btn">Add</button>
+</form>
+{% endfor %}
 
 {% endblock %}
