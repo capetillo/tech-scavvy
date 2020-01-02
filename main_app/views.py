@@ -99,7 +99,7 @@ def task_complete(request, match_id):
 
 class PlayerCreate(CreateView):
     model = Player
-    fields = ['name', 'team', 'leader']
+    fields = ['name']
 # saves associated model if form is valid
 
     def form_valid(self, form):
@@ -146,14 +146,14 @@ class TeamUpdate(LoginRequiredMixin, UpdateView):
 
 class TeamDelete(LoginRequiredMixin, DeleteView):
     model = Team
-    success_url = '/teams/'
+    success_url = '/teams/create/'
 
 
 @login_required
-def assoc_team(request):
+def assoc_team(request, player_id, team_id):
     player = Player.objects.get(id=player_id)
     player.team.add(team_id)
-    return redirect(teams_index)
+    return redirect(TeamDetail)
 
 
 # @login_required

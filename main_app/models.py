@@ -24,10 +24,10 @@ CHOICES = [(i, i) for i in range(3)]
 class Team(models.Model):
     team_name = models.CharField(max_length=100,default=None)
     ready = models.BooleanField(default=False)
-    team_number = models.IntegerField(choices=CHOICES)
+    #team_number = models.IntegerField(choices=CHOICES)
 
     def __str__(self):
-        return f"{self.team_number}"
+        return f"{self.team_name}"
 
     def get_absolute_url(self):
         return reverse('teams_detail',kwargs={'pk': self.id})
