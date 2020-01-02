@@ -19,13 +19,13 @@
 {%endif%}
 
 <h3>Available Teams</h3>
-{% for team in players.team %}
+{% for team in teams %}
 <h3>Pick a team to join</h3>
 <form action="{% url 'assoc_team' player.id team.id %}" method="post">
     {% csrf_token %}
-    {{teams}}
-            <button type="submit" class="btn">Add</button>
-        </form>
+    {{team}}
+        <button type="submit" class="btn">Add</button>
+</form>
 {% endfor %}
 
 {% endblock %}

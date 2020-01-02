@@ -100,7 +100,7 @@ def task_complete(request, match_id):
 class PlayerCreate(CreateView):
     model = Player
     fields = ['name']
-# saves associated model if form is valid
+    # saves associated model if form is valid
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -110,7 +110,8 @@ class PlayerCreate(CreateView):
 @login_required
 def players_index(request):
     players = Player.objects.filter(user=request.user)
-    return render(request, 'players/index.html', {'players': players})
+    teams =  Team.objects.all()
+    return render(request, 'players/index.html', {'players': players,'teams':teams})
 
 
 @login_required
@@ -120,9 +121,7 @@ def players_detail(request, player_id, team_id):
     opposite_team = Team.objects.exclude(id=player.team.id)
 
     return render(request, 'players/index.html', {
-        'player': player,
-        'opposite_team': opposite_team
-
+        'player': player
     })
 
 
