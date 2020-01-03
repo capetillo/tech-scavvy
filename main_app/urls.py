@@ -9,9 +9,12 @@ urlpatterns = [
     path('players/<int:player_id>/', views.players_detail, name='detail'),
     path('players/<int:player_id>/assoc_team/<int:team_id>/', views.assoc_team, name='assoc_team'),
     
-    path('teams/', views.teams_index, name='teams_index'),
-    path('teams/<int:team_id>',views.team_detail, name='teams_detail'),
+    path('teams/', views.TeamList.as_view(), name='teams_index'),
+    path('teams/<int:pk>/', views.TeamDetail.as_view(), name='teams_detail'),
     path('teams/create/', views.TeamCreate.as_view(), name='teams_create'),
+    path('teams/<int:pk>/update/', views.TeamUpdate.as_view(), name='teams_update'),
+    path('teams/<int:pk>/delete/', views.TeamDelete.as_view(), name='teams_delete'),
+    path('teams/<int:pk>/assoc_team/<int:player_id>/',views.assoc_team, name='assoc_team'),
     
     path('match/create/', views.MatchCreate.as_view(), name='match_create'),
     path('match/<int:match_id>/', views.match_detail, name='detail'),

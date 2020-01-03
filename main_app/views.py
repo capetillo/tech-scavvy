@@ -119,15 +119,18 @@ class TeamCreate(LoginRequiredMixin, CreateView):
     model = Team
     fields = ['team_name']
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+class TeamList(LoginRequiredMixin, ListView):
+    model = Team
+class TeamDetail(LoginRequiredMixin, DetailView):
+    model = Team
+class TeamUpdate(LoginRequiredMixin, UpdateView):
+    model = Team
+    fields = ['team_name']
+class TeamDelete(LoginRequiredMixin, DeleteView):
+    model = Team
+    success_url = '/teams/create/'
 
 
-def teams_index(request):
-    teams = Team.objects.all()
-    players = Player.objects.all()
-    return render(request, 'teams/index.html', {'teams': teams, 'players': players})
 
 @login_required
 def assoc_team(request, player_id, team_id):
