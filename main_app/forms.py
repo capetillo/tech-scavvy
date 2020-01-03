@@ -11,4 +11,5 @@ class TaskForm(ModelForm):
 class TaskCompleteForm(ModelForm):
   class Meta:
     model = Task
-    fields = ['team_1_complete', 'team_2_complete']
+
+    fields = ['complete']

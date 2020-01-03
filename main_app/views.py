@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import TaskForm, TaskCompleteForm
 import uuid
 import boto3
-from .models import Player, Team, Match, Task, Photo
+from .models import Player, Team, Match, Task, Photo, WhoAndWhat
 
 
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
@@ -55,16 +55,25 @@ def add_task(request, match_id):
         new_task = form.save(commit=False)
         new_task.match_id = match_id
         new_task.save()
+        teams = Team.objects.all()
+        for team in teams:
+            whodis = WhoAndWhat( team = team,complete = False)
+            new_task.whoAndWhat.add(whodis)
     return redirect('detail', match_id=match_id)
 
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
 
+@login_required
+def task_detail(request):
+    tasks = Task.objects.all()
+    return render(request, 'main_app/task_list.html', {'tasks': tasks})
 
-class TaskDetail(LoginRequiredMixin, DetailView):
-    model = Task
 
+class TaskDelete(LoginRequiredMixin, DeleteView):
+    model = Team
+    success_url = '/match/match_id/'
 
 class MatchCreate(CreateView):
     model = Match
@@ -86,7 +95,8 @@ def match_index(request, match_id):
 def match_detail(request, match_id):
     match = Match.objects.get(id=match_id)
     task_form = TaskForm()
-    return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, 'tasks': Task.objects.all()})
+    tasks = Task.objects.all()
+    return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, 'tasks': tasks})
 
 
 def task_complete(request, match_id):

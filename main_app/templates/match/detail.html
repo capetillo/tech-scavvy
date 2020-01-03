@@ -9,15 +9,6 @@
   <input type="submit" class="btn" value="Add Task">
 </form>
 <table class="striped">
-<<<<<<< HEAD
-<thead>
-  <tr><th>Task</th></tr>
-</thead>
-<tbody>
-  {% for t in match.task_set.all %}
-    <tr>
-      <td>{{t.task}}</td>
-=======
   <thead>
     <tr>
       <th>Task Number</th>
@@ -29,15 +20,11 @@
     <tr>
       <td>{{task.task_number}}</td>
       <td>{{task.task}}</td>
+      <td>{{task.whoAndWhat}}</td>
 
->>>>>>> master
     </tr>
     {% endfor %}
 
-<<<<<<< HEAD
-{% endblock %}
-=======
 
 
     {% endblock %}
->>>>>>> master
