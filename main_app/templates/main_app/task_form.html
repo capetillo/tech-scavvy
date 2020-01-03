@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Judge Info:</h1>
-
+<h1><li><a href="{% url 'task_index' %}">TASK VIEW</a></li></h1>
 <form action="" method="post">
     {% csrf_token %}
     <table>

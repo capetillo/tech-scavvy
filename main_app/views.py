@@ -6,10 +6,10 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import TaskForm
+from .forms import TaskForm, TaskCompleteForm
 import uuid
 import boto3
-from .models import Player, Team, Match, Task, Photo
+from .models import Player, Team, Match, Task, Photo, WhoAndWhat
 
 
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
@@ -55,16 +55,22 @@ def add_task(request, match_id):
         new_task = form.save(commit=False)
         new_task.match_id = match_id
         new_task.save()
-    return redirect('detail', match_id=match_id)
+        teams = Team.objects.all()
+    return redirect('match_detail', match_id=match_id)
 
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
 
+@login_required
+def task_detail(request):
+    tasks = Task.objects.all()
+    return render(request, 'main_app/task_list.html', {'tasks': tasks})
 
-class TaskDetail(LoginRequiredMixin, DetailView):
-    model = Task
 
+class TaskDelete(LoginRequiredMixin, DeleteView):
+    model = Team
+    success_url = '/match/match_id/'
 
 class MatchCreate(CreateView):
     model = Match
@@ -84,22 +90,23 @@ def match_index(request, match_id):
 
 @login_required
 def match_detail(request, match_id):
-    #match = Match.objects.all()
     match = Match.objects.get(id=match_id)
     task_form = TaskForm()
-    return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, })
+    tasks = Task.objects.all()
+    return render(request, 'match/detail.html', {'match': match, 'task_form': task_form, 'tasks': tasks})
+
 
 def task_complete(request, match_id):
-    match= Match.objects.get(id=match_id)
+    match = Match.objects.get(id=match_id)
     task_complete_form = TaskCompleteForm()
-    return render(request,'match/index.html', {'match': match, 'task_complete_form': task_complete_form, })
+    return render(request, 'match/index.html', {'match': match, 'task_complete_form': task_complete_form, })
 # creates a player
 
 
 class PlayerCreate(CreateView):
     model = Player
-    fields = ['name', 'team', 'leader']
-# saves associated model if form is valid
+    fields = ['name']
+    # saves associated model if form is valid
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -109,7 +116,8 @@ class PlayerCreate(CreateView):
 @login_required
 def players_index(request):
     players = Player.objects.filter(user=request.user)
-    return render(request, 'players/index.html', {'players': players})
+    teams =  Team.objects.all()
+    return render(request, 'players/index.html', {'players': players,'teams':teams})
 
 
 @login_required
@@ -119,45 +127,55 @@ def players_detail(request, player_id, team_id):
     opposite_team = Team.objects.exclude(id=player.team.id)
 
     return render(request, 'players/index.html', {
-        'player': player,
-        'opposite_team': opposite_team
-
+        'player': player
     })
 
-@login_required
-def teams_create(request,player_id):
-    player = Player.objects.get(id=player_id)
-    
-    return render(request, 'teams/create.html', {'player': player})
 
-def teams_index(request):
-    teams = Team.objects.all()
-    players = Player.objects.all()
-    return render(request, 'teams/index.html', {'teams': teams, 'players': players})
+class TeamCreate(LoginRequiredMixin, CreateView):
+    model = Team
+    fields = ['team_name']
+
+
+class TeamList(LoginRequiredMixin, ListView):
+    model = Team
+
+
+class TeamDetail(LoginRequiredMixin, DetailView):
+    model = Team
+
+
+class TeamUpdate(LoginRequiredMixin, UpdateView):
+    model = Team
+    fields = ['team_name']
+
+
+class TeamDelete(LoginRequiredMixin, DeleteView):
+    model = Team
+    success_url = '/teams/create/'
 
 
 @login_required
 def assoc_team(request, player_id, team_id):
     player = Player.objects.get(id=player_id)
-    player.teams.add(team_id)
-    return redirect()
+    player.team.add(team_id)
+    return redirect(TeamDetail)
 
 
-@login_required
-def team_detail(request, team_id):
-    team = Team.objects.get(id=team_id)
-    match = Match.objects.get(id=team.match)
-    tasks = Task.objects.get(match=match.id)
-    photos = Photo.objects.get(team=team_id)
+# @login_required
+# def team_detail(request, team_id):
+#     team = Team.objects.get(id=team_id)
+#     match = Match.objects.get(id=team.match)
+#     tasks = Task.objects.get(match=match.id)
+#     photos = Photo.objects.get(team=team_id)
 
-    # this removes all the whoAndWhat that aren't related to the team
-    tasks = tasks.whoAndWhat.filter(team=team.id)
+#     # this removes all the whoAndWhat that aren't related to the team
+#     tasks = tasks.whoAndWhat.filter(team=team.id)
 
-    # this sorts the tasks by the order of tasks from the biggest (being the last)
-    # to the smallest being the first
-    tasks = tasks.sort(key=lambda x: x.task_number, reverse=True)
+#     # this sorts the tasks by the order of tasks from the biggest (being the last)
+#     # to the smallest being the first
+#     tasks = tasks.sort(key=lambda x: x.task_number, reverse=True)
 
-    return redirect(request, 'teams/detail.html', {'team': team, 'match': match, 'tasks': tasks, 'photos': photos})
+#     return redirect(request, 'teams/detail.html', {'team': team, 'match': match, 'tasks': tasks, 'photos': photos})
 
 
 def add_photo(request, task_id):

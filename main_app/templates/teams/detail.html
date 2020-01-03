@@ -5,7 +5,7 @@
 <li>
     <form action="{% url 'assoc_photo' task.id team.id%}" method="post">
         <!-- this doesn't work properly yet and only displays the completeness of team 1 not whatever team we are working with -->
-        {%if task.whoAndWhat[0].complete: %}
+        {%if task.complete: %}
         <!-- leaving the done not done to the styling but we should have an icon or something -->
             X-
         {%elif task.id in photos.task:%}
