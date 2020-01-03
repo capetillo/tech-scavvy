@@ -11,7 +11,7 @@ class Match(models.Model):
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'match_id': self.id})
+        return reverse('match_detail')
 
     def __str__(self):
         return f"name is: {self.name} and judge is: {self.judge}"
@@ -43,7 +43,7 @@ class Player(models.Model):
         return f"{self.name} on team {self.team}"
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'player_id': self.id, 'team_id': self.team.team_number})
+        return reverse('teams_index')
 
 complete = [(True, False)]
 

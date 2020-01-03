@@ -56,7 +56,7 @@ def add_task(request, match_id):
         new_task.match_id = match_id
         new_task.save()
         teams = Team.objects.all()
-    return redirect('detail', match_id=match_id)
+    return redirect('match_detail', match_id=match_id)
 
 
 class TaskList(LoginRequiredMixin, ListView):
