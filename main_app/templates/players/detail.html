@@ -3,25 +3,21 @@
 
 <h3>{{ player.team}}'s Players</h3>
 
-    {{player.name}}
-
-
-
-    <!-- {% if team.count %}
+{{player.name}}
+<!-- {% if team.count %}
     <h5>{{player.name}} you already belong to team {{player.team}}</h5>
     {% else %} -->
-    <h3>Available Teams</h3>
-    {% for team in players.team %}
-    <h3>Pick a team to join</h3>
-    <form action="{% url 'assoc_team' player.id team.id %}" method="post">
-        {% csrf_token %}
-        {{ opposite_team }}
-                <button type="submit" class="btn">Add</button>
-            </form>
-    {% endfor %}
-    
- 
-    <!-- {% endif %} -->
+<h3>Available Teams</h3>
+<h3>Pick a team to join</h3>
+{% for team in players.team %}
+<form action="{% url 'assoc_team' player.id team.id %}" method="post">
+    {% csrf_token %}
+    {{team}}
+    <button type="submit" class="btn">Add</button>
+</form>
+{% endfor %}
+
+<!-- {% endif %} -->
 
 
 {% endblock %}
