@@ -3,6 +3,7 @@
 
 {% for team in team_list %}
 <a href="{% url 'teams_detail' team.id %}">
-    <p>name: {{team.team_name}}</p>
+        <p>name: {{team.team_name}}</p>
+
     {% endfor %}
     {% endblock %}
