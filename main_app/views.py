@@ -56,9 +56,6 @@ def add_task(request, match_id):
         new_task.match_id = match_id
         new_task.save()
         teams = Team.objects.all()
-        for team in teams:
-            whodis = WhoAndWhat( team = team,complete = False)
-            new_task.whoAndWhat.add(whodis)
     return redirect('detail', match_id=match_id)
 
 
