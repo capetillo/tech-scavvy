@@ -2,18 +2,24 @@
 {% block content %}
 
 <h1>Task List</h1>
+{% for task in tasks %}
+<a href="{% url 'task_detail' t.id %}">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title"> Task Number {{ task.task_number }} ---
+        {{ task.task }}
+        
+        {%if task.complete %}
+        approved
+        {%else%}
+        pending
+        {%endif%}
+        {% endfor %}
 
-{% for t in task_list %}
-  <a href="{% url 'task_detail' t.id %}">
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title"> Task Number {{ t.task_number }} ---
-              {{ t.task }}
-            </span>
-           
-        </div>
+      </span>
     </div>
-  </a>
+  </div>
+</a>
 {% endfor %}
 
 {% endblock %}

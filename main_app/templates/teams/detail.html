@@ -1,17 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<ul>
 {% for task in tasks %}
-<li>{%if team1_complete: %}
-    <!-- leaving the done not done to the styling but we should have an icon or something -->
-        X- 
-    {%elif task.id:%}
-        under review
-    {%else:%}
-        O-
-    {%endif%}
-    {{ task.task }}</li>
-<li>{{ task.name }}</li>
+<li>
+    <form action="{% url 'assoc_photo' task.id team.id%}" method="post">
+        <!-- this doesn't work properly yet and only displays the completeness of team 1 not whatever team we are working with -->
+        {%if task.complete: %}
+        <!-- leaving the done not done to the styling but we should have an icon or something -->
+            X-
+        {%elif task.id in photos.task:%}
+            under review-
+        {%else:%}
+            O-
+        {%endif%}
+        {{ task.task }}
+        <input type="file" name="photo-file">
+        <br><br>
+        <input type="submit" class="btn" value="Upload Photo">
+    </form>
+</li> 
 {% endfor %}
-
+</ul>
 {% endblock %}
